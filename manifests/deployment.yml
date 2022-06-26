@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: devopsint 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devopsint
+  template:
+    metadata:
+      labels:
+        app: devopsint 
+    spec:
+      containers:
+        - name: devopsint 
+          image: cnrregistry.azurecr.io/devopsint
+          ports:
+          - containerPort: 80
