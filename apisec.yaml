@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: go-api
-        image: dvader33/golangapi:v1
+        image: __DOCKER_REPOSITORY__/__IMAGE_NAME__:__IMAGE_TAG__
         ports:
         - containerPort: 80
 
