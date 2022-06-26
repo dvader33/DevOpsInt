@@ -107,6 +107,11 @@ func DevOps(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(responsem)
 }
 
+func Test(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Hello")
+}
+
 func main() {
 
 	http.Handle("/DevOps", ValidateJWT(DevOps))
