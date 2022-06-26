@@ -116,7 +116,7 @@ func main() {
 
 	http.Handle("/DevOps", ValidateJWT(DevOps))
 	http.HandleFunc("/jwt", GetJwt)
-
+	http.HandleFunc("/", Test)
 	http.ListenAndServe(":80", nil)
 
 }
