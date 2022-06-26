@@ -109,7 +109,7 @@ func DevOps(w http.ResponseWriter, r *http.Request) {
 
 func Test(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Hello")
+	fmt.Fprintf(w, "hola")
 }
 
 func main() {
