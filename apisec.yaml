@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: go-api
+spec:
+  selector:
+    matchLabels:
+      app: go-api
+  template:
+    metadata:
+      labels:
+        app: go-api
+    spec:
+      containers:
+      - name: go-api
+        image: dvader33/golangapi:v1
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: go-api
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: go-api
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: go-api.30022f683d634e749cca.eastus.aksapp.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: go-api
+            port:
+              number: 80 
