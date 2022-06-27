@@ -1,0 +1,68 @@
+name: azure-kubernetes-service-dev
+
+on:
+  push:
+    branches: [ dev ]
+    paths: main.go
+  pull_request:
+    branches:  none # [ main ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  build-deploy-aks:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REPOSITORY: dvader33 # name of Docker Hub ID
+      IMAGE_NAME: go-apisec-dev
+      IMAGE_TAG: ${{ github.run_number }} # $GITHUB_RUN_NUMBER
+      
+      CLUSTER_NAME: KubeCluster
+      RESOURSE_GROUP: kuberes
+    
+    steps:
+
+    - name: Git Checkout
+      uses: actions/checkout@v2
+  
+    - name: Build Docker Image
+      run:
+        docker build ./ --file ./Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+
+    - name: Login to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
+  
+    - name: Push Image to Docker Hub
+      run:
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+    
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["kubernetes/*.yaml"]'
+        tokenPrefix: __ # optional, default is #{
+        tokenSuffix: __ # optional, default is }#
+      env:
+        DOCKER_REPOSITORY: ${{ env.DOCKER_REPOSITORY }}
+        IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        
+    # Set the target AKS cluster.
+    - uses: Azure/aks-set-context@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURSE_GROUP }}
+    - name: Run Kube-Bench to check cluster config
+      continue-on-error: true
+      run: |
+        kubectl create ns dev
+        sleep 30s
+   
+    - uses: Azure/k8s-deploy@v1
+      with:
+        namespace: dev
+        manifests: |
+          kubernetes/apisec.yaml
+          
