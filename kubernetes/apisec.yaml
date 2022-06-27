@@ -16,6 +16,7 @@ spec:
       app: go-api
   template:
     metadata:
+      namespace: test
       labels:
         app: go-api
     spec:
@@ -29,6 +30,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: test
   name: go-api
 spec:
   type: ClusterIP
@@ -40,6 +42,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: test
   name: go-api
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
