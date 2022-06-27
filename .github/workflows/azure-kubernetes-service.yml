@@ -58,5 +58,4 @@ jobs:
     - uses: Azure/k8s-deploy@v1
       with:
         manifests: |
-          kubernetes/ns.yaml
           kubernetes/apisec.yaml
