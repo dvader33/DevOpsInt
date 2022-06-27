@@ -59,3 +59,4 @@ jobs:
       with:
         manifests: |
           kubernetes/apisec.yaml
+          kubernetes/apisec.yaml
