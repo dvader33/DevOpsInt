@@ -5,7 +5,7 @@ metadata:
   name: master
   labels:
     name: master
-
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
