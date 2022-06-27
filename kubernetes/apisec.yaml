@@ -8,7 +8,6 @@ spec:
       app: go-api
   template:
     metadata:
-      namespace: master
       labels:
         app: go-api
     spec:
@@ -19,9 +18,9 @@ spec:
         - containerPort: 80
 
 ---
+apiVersion: v1
 kind: Service
 metadata:
-  namespace: master
   name: go-api
 spec:
   type: ClusterIP
@@ -33,7 +32,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: master
   name: go-api
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
