@@ -85,6 +85,11 @@ func GetJwt(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func concat(in string) string {
+	msj := "Hello " + in + " your message will be send"
+	return msj
+}
+
 func DevOps(w http.ResponseWriter, r *http.Request) {
 	//DevOps function
 	if r.Method != http.MethodPost {
@@ -102,7 +107,7 @@ func DevOps(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responsem := &ResponseM{}
-	responsem.Message = "Hello " + requestm.To + " your message will be send"
+	responsem.Message = concat(requestm.To)
 
 	json.NewEncoder(w).Encode(responsem)
 }
