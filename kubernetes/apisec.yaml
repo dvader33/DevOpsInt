@@ -1,3 +1,11 @@
+apiVersion: v1
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: master
+  labels:
+    name: master
+
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
