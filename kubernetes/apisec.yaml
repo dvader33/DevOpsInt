@@ -37,7 +37,7 @@ metadata:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-  - host: go-api.30022f683d634e749cca.eastus.aksapp.io
+  - host: go-api-dev.30022f683d634e749cca.eastus.aksapp.io
     http:
       paths:
       - path: /
